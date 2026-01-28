@@ -29,7 +29,7 @@ High performance Roblox serializer to seamlessly transform ```array/hashmap``` <
 - **Hashmap Rule:** Key must be string (max 255 bytes), Max 65535 pairs per map
 
 ## TTBW: The offical TTB wrapper
-If you are processing data from **untrusted source**, it will be your best friend using TTB
+If you are processing data from **untrusted source**, TTBW will be your best friend!
 - **Crash Preventation:** Prevent hard errors/terminations from malformed buffers
 - **Validation:** Perform boundary checks/type checkings before TTB execute
 - **Usage:** Always check if return value is ```nil```. ```nil``` indicates corrupted or malformed data
