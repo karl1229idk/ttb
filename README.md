@@ -13,7 +13,7 @@ High performance Roblox serializer to seamlessly transform ```array/hashmap``` <
 - **Type Infer:** you don't need to pass in type name, feel free to skip it
 - **Explicit Typing:** you can force TTB to use a type you want, for example, u8 instead of f64(default)
 - **HashMap Support:** support HashMap for lazy-devs, don't need to transform to array first
-- **Safety with TTBW:** TTBW guarantee the TTB to no crash
+- **Safety with TTBW:** TTBW guarantee the TTB to not crash
 
 ## Supported Types
 | Types | Size (bytes) | Notes
