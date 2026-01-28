@@ -635,10 +635,9 @@ function transform_table_buffer.decode(buf: buffer?): {any}?
                 at += 2
 
                 local future = at + str_size
-                if future > buf_size then return nil end
 
                 t[count] = buffer.readstring(buf, at, str_size)
-                at += future
+                at = future
             end
     
             return t
