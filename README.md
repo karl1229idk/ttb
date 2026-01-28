@@ -4,7 +4,8 @@ SPDX-FileCopyrightText: 2026 karl_dev1229 <karl1229idk@gmail.com>
 SPDX-License-Identifier: MPL-2.0
 -->
 # transform_table_buffer (TTB)
-High performance Roblox serializer to seamlessly transform ```array/hashmap``` <-> ```buffer```
+High performance Roblox serializer to seamlessly transform ```array/hashmap``` <-> ```buffer```\
+[![REUSE status](https://api.reuse.software/badge/codeberg.org/karl_dev1229/ttb)](https://api.reuse.software/info/codeberg.org/karl_dev1229/ttb)
 
 ## Why TTB & TTBW?
 - **Minimal Buffer:** size = (1 + element bytes)
