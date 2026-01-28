@@ -302,6 +302,7 @@ local master_table = {
             return buffer.readi32(buf, offset)
         end
     },
+    
     [tags.vector3] = {
         size = 12,
 
