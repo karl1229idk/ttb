@@ -302,7 +302,7 @@ local master_table = {
             return buffer.readi32(buf, offset)
         end
     },
-    
+
     [tags.vector3] = {
         size = 12,
 
@@ -646,7 +646,6 @@ function transform_table_buffer.decode(buf: buffer): {any}?
             local reader = branch.reader
         
             local content_size = buf_size - 1
-            if content_size % branch_size ~= 0 then return nil end
             local n = content_size / branch_size
         
             local t = table.create(n)
