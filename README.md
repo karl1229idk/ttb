@@ -6,6 +6,15 @@ SPDX-License-Identifier: MPL-2.0
 # transform_table_buffer (TTB)
 High performance Roblox serializer to seamlessly transform ```array/hashmap``` <-> ```buffer```
 
+## Why TTB & TTBW?
+- **Minimal Buffer:** size = (1 + element bytes)
+- **Zero-Dependency:** download it, and plug-and-play
+- **Dynamic Typed:** no need to wait for IDL compile, which slow down the development process
+- **Type Infer:** you don't need to pass in type name, feel free to skip it
+- **Explicit Typing:** you can force TTB to use a type you want, for example, u8 instead of f64(default)
+- **HashMap Support:** support HashMap for lazy-devs, don't need to transform to buffer first
+- **Safety with TTBW:** TTBW guarantee the TTB to no crash
+
 ## Supported Types
 | Types | Size (bytes) | Notes
 | :--- | :--- | :--- |
