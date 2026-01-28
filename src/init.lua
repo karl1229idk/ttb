@@ -588,7 +588,7 @@ function transform_table_buffer.getBufferFromHashmap(hashmap: {[string]: any}, t
     return buf
 end
 
-function transform_table_buffer.decode(buf: buffer?): {any}?
+function transform_table_buffer.decode(buf: buffer): {any}?
     local buf_size = buffer.len(buf)
 
     local raw_tag = buffer.readu8(buf, 0)
