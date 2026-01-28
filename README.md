@@ -49,7 +49,7 @@ If you are processing data from **untrusted source**, TTBW will be your best fri
 local ttb = require("path/to/TTB")
 local data = { Vector3.new(1, 2, 3), Vector3.new(1, 2, 3) }
 local buf = ttb.getBufferFromArray(
-    data,
+    data --,
     --"Vector3" -- Feel free to not pass in type
                 -- TTB will infer it for you!
 )
