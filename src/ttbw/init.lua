@@ -6,7 +6,7 @@
 ---
 -- @title: ttbw
 -- @description: A simple wrapper to TTB, purposed to let the library be general-use-ready
--- @version: 0.1.0
+-- @version: 1.0.1
 -- @author: karl_dev1229
 ---
 

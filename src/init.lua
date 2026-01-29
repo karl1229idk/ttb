@@ -6,7 +6,7 @@
 ---
 -- @title: ttb
 -- @description: A simple library to transform table and buffer
--- @version: 0.1.0
+-- @version: 1.0.1
 -- @author: karl_dev1229
 ---
 
