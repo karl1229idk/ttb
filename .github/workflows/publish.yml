@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 karl_dev1229 <karl1229idk@gmail.com
+#
+# SPDX-License-Identifier: MPL-2.0
+
 name: Publish to Wally
 
 on:

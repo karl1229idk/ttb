@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 karl_dev1229 <karl1229idk@gmail.com
+#
+# SPDX-License-Identifier: MPL-2.0
+
 [package]
 name = "karl1229idk/ttb"
 descriptions = "High performance Roblox serializer"
