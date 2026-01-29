@@ -6,7 +6,7 @@ on:
       - "v1.*"
 
 permissions:
-  contents: true
+  contents: write
 
 jobs:
   publish:
