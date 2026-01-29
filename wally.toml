@@ -1,5 +1,9 @@
 [package]
 name = "karl1229idk/ttb"
+descriptions = "High performance Roblox serializer"
+license = "MPL-2.0"
+authors = [ "karl_dev1229 <karl1229idk@gmail.com>" ]
+repository = "https://github.com/karl1229idk/ttb"
 version = "1.0.1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
