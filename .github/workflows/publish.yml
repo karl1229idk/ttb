@@ -1,0 +1,36 @@
+name: Publish to Wally
+
+on:
+  push:
+    tags:
+      - "v1.*"
+
+permissions:
+  contents: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Wally
+        uses: upliftgames/setup-wally@v1
+        with:
+          wally-version: "v0.3.2"
+
+      - name: Log in to Wally
+        run: |
+          mkdir -p ~/.wally
+          echo "${{ secrets.WALLY_AUTH_TOKEN }}" > ~/.wally/auth.lua
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Wally
+        run: wally publish
