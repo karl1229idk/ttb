@@ -19,15 +19,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Setup Wally
-        uses: upliftgames/setup-wally@v1
-        with:
-          wally-version: "v0.3.2"
+      #- name: Setup Wally
+      #  uses: upliftgames/setup-wally@v1
+      #  with:
+      #    wally-version: "v0.3.2"
 
-      - name: Log in to Wally
-        run: |
-          mkdir -p ~/.wally
-          echo "${{ secrets.WALLY_AUTH_TOKEN }}" > ~/.wally/auth.lua
+      #- name: Log in to Wally
+      #  run: |
+      #    mkdir -p ~/.wally
+      #    echo "${{ secrets.WALLY_AUTH_TOKEN }}" > ~/.wally/auth.lua
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
@@ -36,5 +36,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to Wally
-        run: wally publish
+      #- name: Publish to Wally
+      #  run: wally publish
