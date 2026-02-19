@@ -149,8 +149,9 @@ local master_table = {
         end,
 
         write = function(buf, offset, val)
+            local getComponents = val.GetComponents
             local x, y, z, r00, r01, r02, r10, r11, r12, r20, r21, r22 = 
-                    val:GetComponents()
+                    getComponents(val)
             buffer.writef32(buf, offset, x)
             buffer.writef32(buf, offset + 4, y)
             buffer.writef32(buf, offset + 8, z)
