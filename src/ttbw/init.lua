@@ -26,7 +26,7 @@ local ttb_tag_lookup = ttb.tag_lookup
 -- Root
 ---
 
-local ttbw = {}
+local ttbw = { ttb = ttb }
 
 function ttbw.safeEncodeArray(array: {any}, typ: string?): buffer?
     if typeof(array) ~= "table" then
