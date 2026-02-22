@@ -33,7 +33,7 @@ local recursion = {}
 -- Note: key/string has limit of 65535 bytes, exceed amount will result in **UNDEFINED BEHAVIOUR**
 -- Note: this function mangle number key to string, for example, { [1] = 1 } become { ["1"] = 1 }
 -- returning nil for baddata
-function recursion.getBufferFromRecursiveTable(tab: {any}): buffer?
+function recursion.getBufferFromRecursiveTable(tab: {any}, realloc_count: number): buffer?
     local seen = {}
     local baddata
     local buffer_size = 8192
@@ -41,7 +41,7 @@ function recursion.getBufferFromRecursiveTable(tab: {any}): buffer?
     local starter_buffer = buffer.create(buffer_size)
     local function realloc(at)
         if at > buffer_size then
-            local new_buffer_size = buffer_size + 4096
+            local new_buffer_size = buffer_size + (realloc_count or 4096)
             local new_buffer = buffer.create(new_buffer_size)
 
             buffer.copy(new_buffer, 0, starter_buffer, 0, buffer_size)
