@@ -32,7 +32,7 @@ local tags = {
     bool = 12
 }
 
--- Internal tag loopup with type name
+-- Internal tag lookup with type name
 local tag_lookup = {
     ["number"] = tags.Number,
     ["string"] = tags.String,
