@@ -19,17 +19,8 @@
 ---
 
 local ttb = require(script.Parent)
-
----
--- Utilities
----
-
-function newBufWithNewPage(buf, target_size, count)
-    local new_buf = buffer.create(target_size)
-    buffer.copy(new_buf, 0, buf, 0, count)
-
-    return new_buf
-end
+local tag_lookup = ttb.tag_lookup
+local master_table = ttb.master_table
 
 ---
 -- Root
@@ -38,65 +29,84 @@ end
 local recursion = {}
 
 -- Accept recursive table to buffer. ONLY use the function in this module to decode
--- Note: that this function is very slow and intended to debug/development, TTBW doesn't know your type until runtime
+-- Note: that this function is slow and intended to debug/development, the module doesn't know your type until runtime
+-- Note: Key/String has limit of 65535 bytes, exceed amount will result in **UNDEFINED BEHAVIOUR**
 -- returning nil for baddata
-function recursion.getBufferFromRecursiveTable(table: {any}): buffer?
+function recursion.getBufferFromRecursiveTable(tab: {any}): buffer?
+    local baddata
     local buffer_size = 8192
     local cursor = 0
     local starter_buffer = buffer.create(buffer_size)
+    local function realloc(at)
+        if at > buffer_size then
+            local new_buffer_size = buffer_size + 4096
+            local new_buffer = buffer.create(new_buffer_size)
 
-    local function recursive_write(table)
-        local after_header_buffer_pos = cursor + 1
-        if after_header_buffer_pos > buffer_size then
-            buffer_size += 4096
+            buffer.copy(new_buffer, 0, starter_buffer, 0, buffer_size)
 
-            starter_buffer = newBufWithNewPage(starter_buffer, buffer_size, cursor)
+            buffer_size = new_buffer_size
+            starter_buffer = new_buffer
         end
+    end
 
-        buffer.writeu8(starter_buffer, cursor, 0xAA)
-        cursor = after_header_buffer_pos
-
-        for key, value in pairs(table) do
+    local function recursiveWrite(tab)
+        for key, value in pairs(tab) do
             local typ = typeof(value)
-            local tag = ttb.tag_lookup[typ]
+            local tag = tag_lookup[typ]
+
+            local after_tag_cursor = cursor + 1
+            local after_key_size_cursor = after_tag_cursor + 2
+            local str_key = tostring(key)
+            local key_size = #str_key
+            local after_key_cursor = after_key_size_cursor + key_size
+
+            realloc(after_key_cursor)
+
+            buffer.writeu8(starter_buffer, cursor, tag or 0)
+            buffer.writeu16(starter_buffer, after_tag_cursor, key_size)
+            buffer.writestring(starter_buffer, after_key_size_cursor, str_key)
+
             if not tag then
                 if typ == "table" then
-                    recursive_write(value)
+                    cursor = after_key_cursor
+
+                    recursiveWrite(value)
+                    if baddata then
+                        return
+                    end
+
                     continue
                 end
 
                 warn("Unsupported type of \"" .. typ .. "\"")
+
+                baddata = true
                 return
             end
 
-            local branch = ttb.master_table[tag]
+            local branch = master_table[tag]
 
-            local delta_size = branch.size or branch.measure(value)
-            local after_tag_cursor = cursor + 1
-            local used_size = after_tag_cursor + delta_size
-            if buffer_size < used_size then
-                buffer_size += 4096
-                
-                starter_buffer = newBufWithNewPage(starter_buffer, buffer_size, cursor)
-            end
+            local delta_value_size = branch.size or branch.measure(value)
+            local after_value_cursor = after_key_cursor + delta_value_size
 
-            buffer.writeu8(starter_buffer, cursor, tag)
-            branch.write(starter_buffer, after_tag_cursor, value)
-            cursor = used_size
-        end
-        
-        local after_finisher_buffer_pos = cursor + 1
-        if after_finisher_buffer_pos > buffer_size then
-            buffer_size += 4096
+            realloc(after_value_cursor)
+            
+            branch.write(starter_buffer, after_key_cursor, value)
 
-            starter_buffer = newBufWithNewPage(starter_buffer, buffer_size, cursor)
+            cursor = after_value_cursor
         end
 
-        buffer.writeu8(starter_buffer, cursor, 0xAB)
-        cursor = after_finisher_buffer_pos
+        local after_end_tag_cursor = cursor + 1
+        realloc(after_end_tag_cursor)
+
+        buffer.writeu8(starter_buffer, cursor, 0xFF)
+        cursor = after_end_tag_cursor
     end
 
-    recursive_write(table)
+    recursiveWrite(tab)
+    if baddata then
+        return
+    end
 
     local final_buffer = buffer.create(cursor)
     buffer.copy(final_buffer, 0, starter_buffer, 0, cursor)
@@ -104,19 +114,10 @@ function recursion.getBufferFromRecursiveTable(table: {any}): buffer?
     return final_buffer
 end
 
--- Change buffer generated from getBufferFromRecursiveTable() and change it back to table
-function recursion.getRecursiveTableFromBuffer(buf: buffer): {any}?
-    local buffer_size = buffer.len(buf)
-    local cursor = 0
-
-    local tabl = {}
-
-    while cursor < buffer_size do
-        cursor += 1
-
-    end
-
-    return tabl
+-- Accept recursive table to buffer. ONLY use the function in this module to decode
+-- returning nil for corrupted buffer
+function recursion.getTableFromRecursiveBuffer(buf: buffer): {any}?
+    
 end
 
 return recursion
